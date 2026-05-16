@@ -1,0 +1,22 @@
+import {TestDataType} from '../test-data/test-data.types'
+
+export const testData:TestDataType = {
+
+  productName: "HP LP3065",
+
+  checkoutInfo: {
+            firstName: "kamlesh",
+            lastName: "Ghorpade",
+            address1: "Flat-1, #90/B, ABC Colony",
+            address2: "XYZ road, Satara",
+            city: "Satara",
+            postCode: "415001",
+            country: "India",
+            state: "Maharashtra",
+  
+        },
+  price:{
+         minPrice: "100",
+         maxPrice: "1000"
+       }
+};
