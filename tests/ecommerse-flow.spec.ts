@@ -43,7 +43,7 @@ test('ecommerse flow', async() =>
   await customerJourneyFLow.verifyCartPage(DataHelper.getProductName());
 
   logger.info('Cart Page Verification Completed')
-
+//Page Verification Completed
   await customerJourneyFLow.verifyCheckoutPage(DataHelper.getFirstName(),DataHelper.getLastName(),DataHelper.getAddress1(),
                                               DataHelper.getAddress2(),DataHelper.getCity(),DataHelper.getPostCode(),
                                               DataHelper.getCountry(),DataHelper.getState())
