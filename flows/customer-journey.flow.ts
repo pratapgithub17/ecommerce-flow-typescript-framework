@@ -5,7 +5,7 @@ import {ProductDetailsPage} from '../pages/productdetails.page';
 import {CartPage} from '../pages/cart.page';
 import {CheckoutPage} from '../pages/checkout.page';
 import {ConfirmOrderPage}from '../pages/confirmorder.page';
-
+//Started
 export class CustomerJourneyFLow{
 
    private readonly page:Page; 
