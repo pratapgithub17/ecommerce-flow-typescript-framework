@@ -1,69 +1,48 @@
+import path from 'path';
 import { defineConfig, devices } from '@playwright/test';
-
-
 import dotenv from 'dotenv';
 
-const envName = process.env.TEST_ENV || 'qa'; 
-dotenv.config({path: `env/.env.${envName}`}); 
+const envName = process.env.TEST_ENV || 'qa';
+const isCI = Boolean(process.env.CI);
+dotenv.config({ path: path.resolve(__dirname, `env/.env.${envName}`) });
 
-
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig({
   testDir: './tests',
-  /* Run tests in files in parallel */
-  reporter: [['html'],
-              ['blob'],
-              ['json', { outputFile: 'results.json' }],
-              ['list'],            
-],
-
- // Global Test Timeout
   timeout: 60_000,
- // Assertion Timeout
   expect: {
-       timeout: 15_000,
-     },
-
+    timeout: 15_000,
+  },
+  retries: isCI ? 1 : 0,
+  reporter: isCI
+    ? [
+        ['list'],
+        ['html', { outputFolder: 'playwright-report', open: 'never' }],
+        ['junit', { outputFile: 'test-results/e2e-junit-results.xml' }],
+      ]
+    : [
+        ['html', { outputFolder: 'playwright-report' }],
+        ['junit', { outputFile: 'test-results/e2e-junit-results.xml' }],
+      ],
   use: {
-        
-        baseURL: process.env.BASE_URL,
-        headless: false,    
-        screenshot: 'only-on-failure',
-        video: 'retain-on-failure',
-        trace: 'retain-on-failure',
-        navigationTimeout: 30_000,
-        actionTimeout: 15_000,
-      
-      },
-
-
-
-
-  /* Configure projects for major browsers */
+    baseURL: process.env.BASE_URL || 'http://localhost',
+    headless: isCI,
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    trace: 'retain-on-failure',
+    navigationTimeout: 30_000,
+    actionTimeout: 15_000,
+  },
   projects: [
-
-        { name: 'setup', testMatch: /.*\.setup\.ts/ },   ////auth file setup
-     {
+    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+    {
       name: 'Chromium',
-     dependencies: ['setup'],         //auth setup
-
-      use: { 
-              browserName:'chromium',   
-              ...devices['Desktop Chrome'],
-              viewport: { width: 1920, height:1080  },     // browser level setting
-               
-              storageState: 'playwright/.auth/UserSession.json', // auth authenticated session
-
-             }
-
-            
+      dependencies: ['setup'],
+      use: {
+        browserName: 'chromium',
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1920, height: 1080 },
+        storageState: 'playwright/.auth/UserSession.json',
+      },
     },
-      
-
   ],
-
- 
-  
 });

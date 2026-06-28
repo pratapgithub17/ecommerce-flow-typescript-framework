@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:ci": "playwright test --reporter=list,html,junit",
+    "install:browsers": "playwright install --with-deps chromium"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
